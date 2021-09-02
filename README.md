@@ -15,6 +15,18 @@ Run the metro server by opening a new console and issuing
 yarn start
 ```
 
+## Generating an `.apk` build
+
+```bash
+cd ./android
+./gradlew assembleRelease
+```
+
+Generated ``.apk`` will be in the subdirectory:
+
+``./android/app/build/outputs/apk/release/``
+
+
 ## Creating the project
 
 The boilerplate basis of the project was created thus
