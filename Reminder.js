@@ -12,6 +12,7 @@ const _ = {
     stopService() { Reminder.stopService() },
     /* any other methods similarly defined */
     ping() { Reminder.ping() },
+    setAlarm() { Reminder.setAlarm() },
 }
 
 export default _

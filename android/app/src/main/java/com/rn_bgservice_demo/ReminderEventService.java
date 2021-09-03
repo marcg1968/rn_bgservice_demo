@@ -21,6 +21,13 @@ public class ReminderEventService extends HeadlessJsTaskService {
 
         WritableMap data = extras != null ? Arguments.fromBundle(extras): Arguments.createMap();
 
+        if (extras != null && extras.keySet().size() > 0) {
+            Log.d(TAG, "→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→");
+            Log.d(TAG, Thread.currentThread().getStackTrace()[2].getLineNumber() + "");
+            Log.d(TAG, "data: " + data);
+            Log.d(TAG, "→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→");
+        }
+
         return new HeadlessJsTaskConfig(
             "ReminderService",
             data,

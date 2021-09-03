@@ -17,6 +17,8 @@ class App extends Component {
 
     render() {
 
+        const delayMs = 15000
+
         const buttons = [
             {
                 title: 'Start',
@@ -33,6 +35,22 @@ class App extends Component {
                 onPress: () => Reminder.ping(),
                 style: styles.button,
             },
+            {
+                title: 'Delayed PING ' + delayMs,
+                onPress: () => {
+                    setTimeout(() => {
+                        console.log(39, 'now pinging')
+                        Reminder.ping()
+                        alert('pinged')
+                    }, delayMs)
+                },
+                style: styles.button,
+            },
+            {
+                title: 'Alarm',
+                onPress: () => Reminder.setAlarm(),
+                style: styles.button,
+            },
         ]
 
         return (
@@ -47,7 +65,7 @@ class App extends Component {
                         <Text style={styles.btntxt}>{btn.title}</Text>
                     </TouchableOpacity>
                 ))}
-                <View style={{ flex: 1 }}/>
+                <View style={{ flex: 2 }}/>
             </View>
         )
     }
@@ -58,9 +76,12 @@ export default App
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        alignItems: 'center', /* prevents items taking up full width */
         justifyContent: 'center',
         backgroundColor: '#ecf0f1',
-        padding: 36,
+        paddingTop: 48,
+        paddingBottom: 48,
+        margin: 12,
     },
     button: {
         flex: 1,
@@ -71,7 +92,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 18,
+        paddingLeft: 18,
+        paddingRight: 18,
+        margin: 12,
     },
     btntxt: {
         fontSize: 24,
