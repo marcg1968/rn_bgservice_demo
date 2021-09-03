@@ -46,9 +46,19 @@ class App extends Component {
                 },
                 style: styles.button,
             },
+            // {
+            //     title: 'Alarm',
+            //     onPress: () => Reminder.setAlarm(),
+            //     style: styles.button,
+            // },
             {
-                title: 'Alarm',
-                onPress: () => Reminder.setAlarm(),
+                title: 'Alarm 1',
+                onPress: () => Reminder.setAlarmOne(),
+                style: styles.button,
+            },
+            {
+                title: 'Alarm 2',
+                onPress: () => Reminder.setAlarmTwo(),
                 style: styles.button,
             },
         ]

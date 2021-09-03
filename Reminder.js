@@ -13,6 +13,8 @@ const _ = {
     /* any other methods similarly defined */
     ping() { Reminder.ping() },
     setAlarm() { Reminder.setAlarm() },
+    setAlarmOne() { Reminder.setAlarmOne() },
+    setAlarmTwo() { Reminder.setAlarmTwo() },
 }
 
 export default _
