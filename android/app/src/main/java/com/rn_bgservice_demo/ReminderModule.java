@@ -125,37 +125,37 @@ public class ReminderModule extends ReactContextBaseJavaModule {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
-        /* attempt 1 using getReactApplicationContext() */
-        requestId = 1000;
-        // Intent mIntent = new Intent(this.reactContext, ReminderService.class);
-        // Intent mIntent = new Intent(context, ReminderService.class);
-        calendar.add(Calendar.MINUTE, 2);
-        mIntent = new Intent(reactContext, AlarmReceiver.class);
-        bundle = new Bundle();
-        bundle.putString("PONG", (new Date()).getTime() + "");
-        bundle.putString("via", "alarm 1000");
-        mIntent.putExtras(bundle);
-        // PendingIntent pIntent = PendingIntent.getService(context, requestId, mIntent, PendingIntent.FLAG_NO_CREATE);
-        // PendingIntent pIntent = PendingIntent.getService(this.reactContext, requestId, mIntent, PendingIntent.FLAG_NO_CREATE);
-        pIntent = PendingIntent.getBroadcast(reactContext, requestId, mIntent, 0);
-        Log.d(TAG, "đđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđ");
-        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getLineNumber() + " setAlarm ");
-        Log.d(TAG, "pIntent = " + pIntent);
-        Log.d(TAG, "pIntent.toString() = " + pIntent.toString());
-        Log.d(TAG, "calendar = " + sdf.format(calendar.getTime()));
-        Log.d(TAG, "calendar.getTimeInMillis() = " + calendar.getTimeInMillis());
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        Log.d(TAG, "now: " + sdf.format(calendar.getTime()));
-        Log.d(TAG, "alarmMgr: " + alarmMgr.toString());
-        Log.d(TAG, "đđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđ");
-
-        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, calendar.getTimeInMillis(), pIntent);
-        // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
-        Toast.makeText(reactContext, String.format("Alarm %s set!", requestId), Toast.LENGTH_LONG).show();
-
-        /* cancel */
-        pIntent = PendingIntent.getService(reactContext, requestId, mIntent, PendingIntent.FLAG_NO_CREATE);
-        alarmMgr.cancel(pIntent);
+        // /* attempt 1 using getReactApplicationContext() */
+        // requestId = 1000;
+        // // Intent mIntent = new Intent(this.reactContext, ReminderService.class);
+        // // Intent mIntent = new Intent(context, ReminderService.class);
+        // calendar.add(Calendar.MINUTE, 2);
+        // mIntent = new Intent(reactContext, AlarmReceiver.class);
+        // bundle = new Bundle();
+        // bundle.putString("PONG", (new Date()).getTime() + "");
+        // bundle.putString("via", "alarm 1000");
+        // mIntent.putExtras(bundle);
+        // // PendingIntent pIntent = PendingIntent.getService(context, requestId, mIntent, PendingIntent.FLAG_NO_CREATE);
+        // // PendingIntent pIntent = PendingIntent.getService(this.reactContext, requestId, mIntent, PendingIntent.FLAG_NO_CREATE);
+        // pIntent = PendingIntent.getBroadcast(reactContext, requestId, mIntent, 0);
+        // Log.d(TAG, "đđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđ");
+        // Log.d(TAG, Thread.currentThread().getStackTrace()[2].getLineNumber() + " setAlarm ");
+        // Log.d(TAG, "pIntent = " + pIntent);
+        // Log.d(TAG, "pIntent.toString() = " + pIntent.toString());
+        // Log.d(TAG, "calendar = " + sdf.format(calendar.getTime()));
+        // Log.d(TAG, "calendar.getTimeInMillis() = " + calendar.getTimeInMillis());
+        // calendar.setTimeInMillis(System.currentTimeMillis());
+        // Log.d(TAG, "now: " + sdf.format(calendar.getTime()));
+        // Log.d(TAG, "alarmMgr: " + alarmMgr.toString());
+        // Log.d(TAG, "đđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđ");
+        //
+        // alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, calendar.getTimeInMillis(), pIntent);
+        // // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
+        // Toast.makeText(reactContext, String.format("Alarm %s set!", requestId), Toast.LENGTH_LONG).show();
+        //
+        // /* cancel */
+        // pIntent = PendingIntent.getService(reactContext, requestId, mIntent, PendingIntent.FLAG_NO_CREATE);
+        // alarmMgr.cancel(pIntent);
 
         /* attempt 2 using
          - this.reactContext
@@ -174,19 +174,44 @@ public class ReminderModule extends ReactContextBaseJavaModule {
         Log.d(TAG, "đđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđ");
         Log.d(TAG, Thread.currentThread().getStackTrace()[2].getLineNumber() + " setAlarm ");
         Log.d(TAG, "pIntent = " + pIntent);
-        Log.d(TAG, "pIntent.toString() = " + pIntent.toString());
-        // Log.d(TAG, "calendar = " + sdf.format(calendar.getTime()));
-        // Log.d(TAG, "calendar.getTimeInMillis() = " + calendar.getTimeInMillis());
+        Log.d(TAG, "calendar = " + sdf.format(calendar.getTime()));
+        Log.d(TAG, "calendar.getTimeInMillis() = " + calendar.getTimeInMillis());
         calendar.setTimeInMillis(System.currentTimeMillis());
         Log.d(TAG, "now: " + sdf.format(calendar.getTime()));
-        Log.d(TAG, "alarm in SystemClock.elapsedRealtime() 60 * 1000: " + SystemClock.elapsedRealtime() + 60 * 1000);
+        Log.d(TAG, "alarm in SystemClock.elapsedRealtime() + (60 * 1000): " + SystemClock.elapsedRealtime() + (60 * 1000));
+        Log.d(TAG, "alarm time: " + sdf.format(SystemClock.elapsedRealtime() + (60 * 1000)));
         Log.d(TAG, "alarmMgr: " + alarmMgr.toString());
         Log.d(TAG, "đđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđ");
 
         // alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, calendar.getTimeInMillis(), pIntent);
         // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
         alarmMgr.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() +
-                60 * 1000, pIntent);
+                (60 * 1000), pIntent);
+        Toast.makeText(reactContext, String.format("Alarm %s set!", requestId), Toast.LENGTH_LONG).show();
+
+        alarmMgr.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() +
+                (60 * 1000), pIntent);
+        Toast.makeText(reactContext, String.format("Alarm %s set!", requestId), Toast.LENGTH_LONG).show();
+
+        // pIntent = PendingIntent.getBroadcast(reactContext, requestId + 15, mIntent, 0);
+        // alarmMgr.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_FIFTEEN_MINUTES, pIntent);
+        // Toast.makeText(reactContext, String.format("Alarm %s set!", requestId + 15), Toast.LENGTH_LONG).show();
+
+        requestId += 15;
+        mIntent = new Intent(reactContext, AlarmReceiver.class);
+        bundle = new Bundle();
+        bundle.putString("PONG", (new Date()).getTime() + "");
+        bundle.putString("via", "alarm " + requestId );
+        bundle.putString("at", "" + System.currentTimeMillis() + 60 * 1000 * 2);
+        mIntent.putExtras(bundle);
+        pIntent = PendingIntent.getBroadcast(reactContext, requestId, mIntent, 0);
+        Log.d(TAG, "đđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđ");
+        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getLineNumber() + " setAlarm ");
+        Log.d(TAG, "pIntent = " + pIntent);
+        Log.d(TAG, "alarm time: " + sdf.format(System.currentTimeMillis() + 60 * 1000 * 2));
+        Log.d(TAG, "alarmMgr: " + alarmMgr.toString());
+        Log.d(TAG, "đđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđ");
+        alarmMgr.set(AlarmManager.RTC_WAKEUP,  System.currentTimeMillis() + 60 * 1000 * 2, pIntent);
         Toast.makeText(reactContext, String.format("Alarm %s set!", requestId), Toast.LENGTH_LONG).show();
 
         // AlarmManager.AlarmClockInfo next = alarmMgr.getNextAlarmClock();
@@ -197,7 +222,7 @@ public class ReminderModule extends ReactContextBaseJavaModule {
         //     Log.d(TAG, "next.getShowIntent() = " + next.getShowIntent());
         //     Log.d(TAG, "łłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłłł");
         // }
-        
+
     }
 
 }
