@@ -79,6 +79,9 @@ public class ReminderModule extends ReactContextBaseJavaModule {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(emission, null);
 
         /* METHOD 2 to send events to RN layer VIA ReminderEventService */
+        /* which loops in the background and sends data to the RN layer */
+        /* which in turn can be caught by the BackgroundTask defined high up by: */
+        /* AppRegistry.registerHeadlessTask('ReminderService', () => BackgroundTask) */
         // Intent mIntent = new Intent(this.reactContext, ReminderEventService.class);
         Intent mIntent = new Intent(this.reactContext, ReminderEventService.class); /* NB: class extending HeadlessJsTaskService */
         /* data sent via .putString(key, value) is available in RN layer,
@@ -90,6 +93,8 @@ public class ReminderModule extends ReactContextBaseJavaModule {
         this.reactContext.startService(mIntent);
 
         /* can also send to ReminderService */
+        /* which has been configured to show a notification drawer on the status bar when started */
+        /* and when tapped starts the main activity */
         mIntent = new Intent(this.reactContext, ReminderService.class);
         bundle = new Bundle();
         bundle.putString("PONG", (new Date()).getTime() + "");
@@ -101,7 +106,9 @@ public class ReminderModule extends ReactContextBaseJavaModule {
     /**
      * This will set an alarm to run in about one minute's time
      * which through an intent, triggers the BroadcastReceiver AlarmReceiver.class
-     * to start ReminderService.
+     * to start ReminderService and it sends amongst other items
+     * a key-value pair: "PONG": DATE_TIME_STRING which will be caught in the RN layer
+     * and will trigger a toast.
      * It uses AlarmManager.ELAPSED_REALTIME_WAKEUP and SystemClock.elapsedRealtime()
      * to determine the time to set the alarm.
      */
@@ -149,7 +156,9 @@ public class ReminderModule extends ReactContextBaseJavaModule {
     /**
      * This will set an alarm to run in about two minutes' time
      * which through an intent, triggers the BroadcastReceiver AlarmReceiver.class
-     * to start ReminderService.
+     * to start ReminderService and it sends amongst other items
+     * a key-value pair: "ACTION": "FETCH" which will be caught in the RN layer
+     * and will trigger a data fetch task.
      * It uses AlarmManager.RTC_WAKEUP and System.currentTimeMillis() + 60 * 1000 * 2
      * to determine the time to set the alarm.
      */
@@ -172,7 +181,8 @@ public class ReminderModule extends ReactContextBaseJavaModule {
         alarmMgr = (AlarmManager) reactContext.getSystemService(Context.ALARM_SERVICE);
         mIntent = new Intent(reactContext, AlarmReceiver.class);
         bundle = new Bundle();
-        bundle.putString("PONG", (new Date()).getTime() + "");
+        // bundle.putString("PONG", (new Date()).getTime() + "");
+        bundle.putString("ACTION", "FETCH_DATA");
         bundle.putString("via", "alarm " + requestId);
         bundle.putString("triggerMs", "" + triggerMs);
         bundle.putString("at", sdf.format(triggerMs));

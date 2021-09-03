@@ -20,4 +20,14 @@ module.exports = async (taskData) => {
             ToastAndroid.LONG
         )
     }
+
+    /* listen for key 'ACTION' */
+    const action = Object.keys(taskData).find(key => key.toUpperCase().startsWith('ACTION'))
+    switch (action) {
+        case 'FETCH_DATA':
+            /* TODO: simulate data fetching and store to asyncStorage */
+            break
+        default:
+            break
+    }
 }
