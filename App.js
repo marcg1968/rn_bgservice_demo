@@ -36,46 +36,36 @@ class App extends Component {
                 style: styles.button,
             },
             {
-                title: 'Delayed PING ' + delayMs,
-                onPress: () => {
-                    setTimeout(() => {
-                        console.log(39, 'now pinging')
-                        Reminder.ping()
-                        alert('pinged')
-                    }, delayMs)
-                },
-                style: styles.button,
-            },
-            // {
-            //     title: 'Alarm',
-            //     onPress: () => Reminder.setAlarm(),
-            //     style: styles.button,
-            // },
-            {
                 title: 'Alarm 1',
                 onPress: () => Reminder.setAlarmOne(),
                 style: styles.button,
+                text: 'Set alarm to start service in 1 min:',
             },
             {
                 title: 'Alarm 2',
                 onPress: () => Reminder.setAlarmTwo(),
                 style: styles.button,
+                text: 'Set alarm to start service in 2 mins:',
             },
         ]
 
         return (
             <View style={styles.container}>
-                <View style={{ flex: 1 }}/>
                 {buttons.map((btn, i) => (
-                    <TouchableOpacity
+                    <View
                         key={'btn'+i}
-                        style={styles.button}
-                        onPress={btn.onPress}
+                        style={{ flex: ('text' in btn) ? 3 : 2 }}
                     >
-                        <Text style={styles.btntxt}>{btn.title}</Text>
-                    </TouchableOpacity>
+                        {('text' in btn) ? (<Text>{btn.text}</Text>) : null}
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={btn.onPress}
+                        >
+                            <Text style={styles.btntxt}>{btn.title}</Text>
+                        </TouchableOpacity>
+                    </View>
                 ))}
-                <View style={{ flex: 2 }}/>
+                <View style={{ flex: 1 }}/>
             </View>
         )
     }
