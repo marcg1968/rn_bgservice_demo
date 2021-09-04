@@ -1,3 +1,8 @@
+/**
+ * This service listens for intents and triggers creation of a notification drawer
+ * on the status bar of the device setting values as required.
+ */
+
 package com.rn_bgservice_demo;
 
 import android.app.Notification;

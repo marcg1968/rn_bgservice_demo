@@ -1,3 +1,13 @@
+/**
+ * This service loops in the background, passing any data received via an intent
+ * to the React Native layer.
+ * Requires the following invocation (usually in index.js):
+ *      AppRegistry.registerHeadlessTask('ReminderService', () => BackgroundTask)
+ * and the BackgroundTask.js file should have
+ *      module.exports = async (taskData) => { ... }
+ * where the variable "taskData" holds data passed from this service.
+ */
+
 package com.rn_bgservice_demo;
 
 import android.content.Intent;

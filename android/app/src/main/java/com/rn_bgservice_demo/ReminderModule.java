@@ -181,7 +181,7 @@ public class ReminderModule extends ReactContextBaseJavaModule {
         alarmMgr = (AlarmManager) reactContext.getSystemService(Context.ALARM_SERVICE);
         mIntent = new Intent(reactContext, AlarmReceiver.class);
         bundle = new Bundle();
-        // bundle.putString("PONG", (new Date()).getTime() + "");
+        bundle.putString("PONG", (new Date()).getTime() + "");
         bundle.putString("ACTION", "FETCH_DATA");
         bundle.putString("via", "alarm " + requestId);
         bundle.putString("triggerMs", "" + triggerMs);
@@ -205,6 +205,43 @@ public class ReminderModule extends ReactContextBaseJavaModule {
             Toast.LENGTH_LONG
         ).show();
 
+    }
+
+    /* start alarm to trigger ReminderEventService in 30 secs */
+    @ReactMethod
+    public void setAlarmThree() {
+        Log.d(TAG, "……………………………………………………………………………………………………………………………………………………………………………………………………………");
+        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getLineNumber() + ": "
+                + (new Throwable().getStackTrace())[0].getMethodName());
+        Log.d(TAG, "……………………………………………………………………………………………………………………………………………………………………………………………………………");
+
+        Intent mIntent;
+        PendingIntent pIntent;
+        Bundle bundle;
+        int requestId = 3;
+        long triggerMs = System.currentTimeMillis() + 30 * 1000; /* in 30s */
+        alarmMgr = (AlarmManager) reactContext.getSystemService(Context.ALARM_SERVICE);
+        mIntent = new Intent(reactContext, AlarmReceiver.class);
+        bundle = new Bundle();
+        /* this key-value pair will be sent to the RN layer: */
+        bundle.putString("ACTION", "FETCH_DATA");
+        mIntent.putExtras(bundle);
+        pIntent = PendingIntent.getBroadcast(reactContext, requestId, mIntent, 0);
+        alarmMgr.set(
+            AlarmManager.RTC_WAKEUP,
+            triggerMs,
+            pIntent
+        );
+        Log.d(TAG, "đđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđ");
+        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getLineNumber() + " setAlarm ");
+        Log.d(TAG, "alarm #: " + requestId);
+        Log.d(TAG, "alarm at: " + sdf.format(triggerMs));
+        Log.d(TAG, "đđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđđ");
+        Toast.makeText(
+            reactContext,
+            String.format("Alarm %s for %s set!", requestId, sdf.format(triggerMs)),
+            Toast.LENGTH_LONG
+        ).show();
     }
 
 }

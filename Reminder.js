@@ -13,6 +13,7 @@ const _ = {
     ping() { Reminder.ping() },
     setAlarmOne() { Reminder.setAlarmOne() },
     setAlarmTwo() { Reminder.setAlarmTwo() },
+    setAlarmThree() { Reminder.setAlarmThree() },
 }
 
 export default _

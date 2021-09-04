@@ -1,23 +1,58 @@
 
 import React, { Component } from 'react'
 import {
-    Text,
-    View,
-    TouchableOpacity,
+    AppState,
+    ScrollView,
     StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Reminder from './Reminder'
 
 class App extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            appState: AppState.currentState,
+            statusInfo: null,
+        }
+    }
+
+    componentDidMount = async () => {
+
+        AppState.addEventListener('change', await this.handleAppStateChange)
+
+        try {
+            const allKeys = await AsyncStorage.getAllKeys()
+            console.log(25, {allKeys})
+            const last_fetch = await AsyncStorage.getItem('@last_fetch')
+            this.setState({statusInfo: `last fetched: ${last_fetch}`})
+        } catch(e) { /* error reading value */ }
+    }
+
+    handleAppStateChange = async nextAppState => {
+        const { appState } = this.state
+        if (appState.match(/inactive|background/) && nextAppState === 'active') {
+            console.log(37, `App has come to the foreground! [Was: ${appState}]`, new Date())
+            try {
+                const allKeys = await AsyncStorage.getAllKeys()
+                console.log(25, {allKeys})
+                const last_fetch = await AsyncStorage.getItem('@last_fetch')
+                this.setState({ statusInfo: `last fetched: ${last_fetch}` })
+            } catch(e) { /* error reading value */ }
+        }
+        this.setState({ appState: nextAppState })
     }
 
     render() {
 
         const delayMs = 15000
+        const {
+            statusInfo,
+        } = this.state
 
         const buttons = [
             {
@@ -47,29 +82,52 @@ class App extends Component {
                 style: styles.button,
                 text: 'Set alarm to start service in 2 mins:',
             },
+            {
+                title: 'Alarm 3',
+                onPress: () => Reminder.setAlarmThree(),
+                style: styles.button,
+                text: 'Set alarm to start service in 30 secs:',
+            },
+            // {
+            //     title: 'Alarm 4',
+            //     onPress: () => Reminder.setAlarmTwo(),
+            //     style: styles.button,
+            //     text: 'Set alarm to start service in 2 mins:',
+            // },
         ]
 
         return (
-            <View style={styles.container}>
-                {buttons.map((btn, i) => (
-                    <View
-                        key={'btn'+i}
-                        style={{ flex: ('text' in btn) ? 3 : 2 }}
-                    >
-                        {('text' in btn) ? (<Text>{btn.text}</Text>) : null}
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={btn.onPress}
+            <ScrollView>
+                <View style={styles.container}>
+                    {buttons.map((btn, i) => (
+                        <View
+                            key={'btn'+i}
+                            // style={{ flex: ('text' in btn) ? 3 : 2 }}
+                            style={('text' in btn) ? styles.btnContainerWithText : styles.btnContainer}
                         >
-                            <Text style={styles.btntxt}>{btn.title}</Text>
-                        </TouchableOpacity>
-                    </View>
-                ))}
-                <View style={{ flex: 1 }}/>
-            </View>
+                            {('text' in btn) ? (<Text>{btn.text}</Text>) : null}
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={btn.onPress}
+                            >
+                                <Text style={styles.btntxt}>{btn.title}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ))}
+                    <Spacer/>
+                </View>
+                <View
+                    style={styles.status}
+                >
+                    <Text>Status: {statusInfo || '--'}</Text>
+                </View>
+                <Spacer/>
+            </ScrollView>
         )
     }
 }
+
+const Spacer = () => <View style={{ flex: 1 }}/>
 
 export default App
 
@@ -79,9 +137,21 @@ const styles = StyleSheet.create({
         alignItems: 'center', /* prevents items taking up full width */
         justifyContent: 'center',
         backgroundColor: '#ecf0f1',
-        paddingTop: 48,
-        paddingBottom: 48,
+        paddingTop: 36,
+        paddingBottom: 24,
         margin: 12,
+        minHeight: 360,
+    },
+    status: {
+        flex: 1,
+        paddingLeft: 12,
+        paddingRight: 12,
+    },
+    btnContainer: {
+        flex: 2,
+    },
+    btnContainerWithText: {
+        flex: 3,
     },
     button: {
         flex: 1,
